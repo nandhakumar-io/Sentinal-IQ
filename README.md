@@ -1,6 +1,6 @@
 # Cloud-Native Centralized Vulnerability Registry & Intelligent Security Query Interface
 
-## Architecture
+## Architecture (structure)
 
 **Modular monolith** for the core (auth, tenancy, registry CRUD, dashboards/API),
 with two components pulled out as separate services from day one because their
