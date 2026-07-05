@@ -64,7 +64,10 @@ class User(Base):
     id: Mapped[uuid.UUID] = uuid_pk()
     tenant_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("institutions.id"), nullable=False)
     email: Mapped[str] = mapped_column(String(255), nullable=False)
-    role: Mapped[Role] = mapped_column(Enum(Role), default=Role.VIEWER)
+    role: Mapped[Role] = mapped_column(
+        Enum(Role, values_callable=lambda enum_cls: [e.value for e in enum_cls]),
+        default=Role.VIEWER,
+    )
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
 
     institution: Mapped["Institution"] = relationship(back_populates="users")
@@ -96,7 +99,9 @@ class Vulnerability(Base):
     title: Mapped[str] = mapped_column(String(500))
     description: Mapped[str] = mapped_column(Text)
     cvss_score: Mapped[float | None] = mapped_column(Float)
-    severity: Mapped[Severity | None] = mapped_column(Enum(Severity))
+    severity: Mapped[Severity | None] = mapped_column(
+        Enum(Severity, values_callable=lambda enum_cls: [e.value for e in enum_cls])
+    )
     cwe_ids: Mapped[list[str] | None] = mapped_column(ARRAY(String))
     affected_cpes: Mapped[list[str] | None] = mapped_column(ARRAY(String))
     raw_payload: Mapped[dict | None] = mapped_column(JSONB)  # original feed payload

@@ -13,9 +13,17 @@ from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field
 
 
-class NvdCvssMetricV31(BaseModel):
+class NvdCvssData(BaseModel):
     model_config = ConfigDict(extra="ignore")
     base_score: float = Field(alias="baseScore")
+
+class NvdCvssMetricV31(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    cvss_data: NvdCvssData = Field(alias="cvssData")
+
+    @property
+    def base_score(self) -> float:
+        return self.cvss_data.base_score
 
 
 class NvdMetrics(BaseModel):

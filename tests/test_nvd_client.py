@@ -174,4 +174,3 @@ async def test_fetch_cves_no_api_key_sends_no_header():
     await client.fetch_cves()
 
     assert "apikey" not in route.calls.last.request.headers
-1
